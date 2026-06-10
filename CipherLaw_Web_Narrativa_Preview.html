@@ -275,6 +275,21 @@
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), transparent);
   }
 
+  .service-cta {
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    color: var(--purple-light);
+    padding: 9px 18px; border-radius: 4px;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .service-cta:hover {
+    background: var(--purple-glow);
+    border-color: var(--purple-light);
+    color: var(--white);
+  }
+
   /* PROOF */
   .proof-section {
     padding: 100px 48px;
@@ -425,39 +440,46 @@
   </div>
 </section>
 
-<!-- SOLUCIÓN -->
+<!-- CÓMO TRABAJAMOS -->
 <section class="solution-section">
-  <div class="solution-inner">
-    <div class="solution-left">
+  <div class="solution-inner" style="grid-template-columns: 1fr; gap: 0;">
+    <div style="max-width:1100px; margin: 0 auto; width:100%;">
       <div class="section-eyebrow">Cómo trabajamos</div>
-      <h2>Primero entendemos tu modelo. Después te decimos exactamente qué necesitás.</h2>
-      <p>No te mandamos un presupuesto genérico. Cada founder tiene una situación distinta — modelo de negocio, jurisdicciones, etapa, objetivos. Primero escuchamos, después diseñamos.</p>
-      <p>Coordinamos con una red de abogados locales en 20+ jurisdicciones. Vos tenés un solo interlocutor para todo.</p>
-    </div>
-    <div class="solution-right">
-      <ul class="diff-list">
-        <li class="diff-item">
-          <span class="diff-num">01</span>
-          <div class="diff-text">
-            <strong>Un solo interlocutor para todo</strong>
-            <span>No coordinás vos con abogados en Delaware, España y Argentina. Lo hacemos nosotros.</span>
+      <h2 style="max-width:600px; margin-bottom:16px;">Primero entendemos tu situación. Después ejecutamos.</h2>
+      <p style="font-size:16px; color:var(--gray-light); max-width:560px; line-height:1.7; margin-bottom:56px;">
+        No arrancamos con una propuesta genérica. Cada founder tiene un modelo distinto — primero lo entendemos, después diseñamos la estructura correcta.
+      </p>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:24px;">
+
+        <div style="position:relative; padding:32px; background:var(--card); border:1px solid var(--border); border-radius:8px;">
+          <div style="font-family:var(--mono); font-size:32px; font-weight:700; color:var(--purple); opacity:0.4; margin-bottom:20px; line-height:1;">01</div>
+          <div style="font-size:16px; font-weight:600; color:var(--white); margin-bottom:10px;">Discovery</div>
+          <div style="font-size:14px; color:var(--gray); line-height:1.65;">
+            30 minutos. Contás tu situación, nosotros escuchamos y preguntamos. Sin propuestas todavía — primero hay que entender bien el problema.
           </div>
-        </li>
-        <li class="diff-item">
-          <span class="diff-num">02</span>
-          <div class="diff-text">
-            <strong>Precio fijo, sin sorpresas</strong>
-            <span>Sabés cuánto sale antes de empezar. Sin horas facturables infinitas.</span>
+          <div style="margin-top:16px; font-size:12px; color:var(--purple-light); font-family:var(--mono);">Sin costo · Sin compromiso</div>
+        </div>
+
+        <div style="position:relative; padding:32px; background:var(--card); border:1px solid var(--border); border-radius:8px;">
+          <div style="font-family:var(--mono); font-size:32px; font-weight:700; color:var(--purple); opacity:0.4; margin-bottom:20px; line-height:1;">02</div>
+          <div style="font-size:16px; font-weight:600; color:var(--white); margin-bottom:10px;">Diagnóstico y propuesta</div>
+          <div style="font-size:14px; color:var(--gray); line-height:1.65;">
+            Según tu caso, te proponemos un Architecture Sprint o una cotización directa. En ambos casos: precio fijo, alcance claro y timeline real antes de empezar.
           </div>
-        </li>
-        <li class="diff-item">
-          <span class="diff-num">03</span>
-          <div class="diff-text">
-            <strong>Velocidad cuando importa</strong>
-            <span>Cuando tenés una reunión con inversores en dos semanas, no podemos tardar dos meses.</span>
+          <div style="margin-top:16px; font-size:12px; color:var(--purple-light); font-family:var(--mono);">Precio fijo · Sin sorpresas</div>
+        </div>
+
+        <div style="position:relative; padding:32px; background:var(--card); border:1px solid var(--border); border-radius:8px;">
+          <div style="font-family:var(--mono); font-size:32px; font-weight:700; color:var(--purple); opacity:0.4; margin-bottom:20px; line-height:1;">03</div>
+          <div style="font-size:16px; font-weight:600; color:var(--white); margin-bottom:10px;">Implementación y acompañamiento</div>
+          <div style="font-size:14px; color:var(--gray); line-height:1.65;">
+            Ejecutamos la estructura, coordinamos con nuestra red de abogados locales en 20+ jurisdicciones y te mantenemos cubierto. Vos tenés un solo interlocutor para todo.
           </div>
-        </li>
-      </ul>
+          <div style="margin-top:16px; font-size:12px; color:var(--purple-light); font-family:var(--mono);">Un solo punto de contacto</div>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
@@ -469,77 +491,116 @@
     <h2>¿En qué momento estás?</h2>
     <p class="services-lead">Cada servicio está diseñado para una situación concreta. Sin paquetes genéricos.</p>
 
-    <div class="services-grid">
+    <div style="display:flex; flex-direction:column; gap:12px;">
 
-      <div class="service-card service-sprint">
-        <div>
+      <!-- ARCHITECTURE SPRINT — entrada -->
+      <div class="service-card service-sprint" style="display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:260px;">
           <span class="service-situation">No sabés por dónde empezar</span>
           <div class="service-name">Architecture Sprint</div>
-          <div class="service-desc">Análisis de tu modelo + roadmap visual + cotización exacta de lo que necesitás. Acreditable al paquete que elijas.</div>
+          <div class="service-desc">Antes de ejecutar cualquier cosa, analizamos tu modelo, tus jurisdicciones y tu roadmap. Te entregamos un mapa visual de qué necesitás y cuánto sale — sin comprometerte a nada. Si avanzás, se descuenta del paquete.</div>
         </div>
-        <div class="service-price">
-          <span class="price-amount">$350–500</span>
-          <span class="price-note">acreditable</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div>
-          <span class="service-situation">Quiero levantar capital en EEUU</span>
-          <div class="service-name">Fundraising Ready</div>
-          <div class="service-desc">C Corp Delaware + acuerdos de founders + SAFE. Listo en 2–3 semanas.</div>
-        </div>
-        <div class="service-price">
-          <span class="price-amount">$5,000</span>
-          <span class="price-note">precio fijo</span>
+        <div style="display:flex; align-items:center; gap:24px; flex-shrink:0;">
+          <div class="service-price" style="text-align:right;">
+            <span class="price-amount">$350–500</span>
+            <span class="price-note">acreditable</span>
+          </div>
+          <button class="service-cta">Agendá tu Sprint →</button>
         </div>
       </div>
 
-      <div class="service-card">
-        <div>
-          <span class="service-situation">Necesito estructura offshore antes de mi ronda</span>
-          <div class="service-name">Delaware Flip / Offshore</div>
-          <div class="service-desc">Holding en Cayman, BVI o UK. Traspaso de acciones y estructuración pre-Series A.</div>
+      <!-- 6 PRODUCTOS — grid 2 columnas -->
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px;">
+
+        <div class="service-card">
+          <div style="width:100%">
+            <span class="service-situation">Solo necesito constituir mi empresa en EEUU</span>
+            <div class="service-name">Incorporación USA</div>
+            <div class="service-desc">Una LLC o C Corp en Delaware bien armada desde el principio te evita rehacerlo cuando llegue el momento de levantar capital o abrir cuentas bancarias.</div>
+            <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+              <button class="service-cta">Quiero saber más →</button>
+            </div>
+          </div>
         </div>
-        <div class="service-price">
-          <span class="price-amount">$15,000+</span>
-          <span class="price-note">según scope</span>
+
+        <div class="service-card">
+          <div style="width:100%">
+            <span class="service-situation">Quiero levantar capital en EEUU</span>
+            <div class="service-name">Fundraising Ready</div>
+            <div class="service-desc">Una estructura mal armada puede caerte en el due diligence cuando menos podés permitírtelo. Armamos la C Corp, los acuerdos de founders y el SAFE para que llegués investor-ready desde el primer día.</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+              <button class="service-cta">Agendá una sesión →</button>
+              <div class="service-price" style="margin-left:16px;">
+                <span class="price-amount">desde $5,000</span>
+                <span class="price-note">precio fijo</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div class="service-card" style="border-color: rgba(167,139,250,0.4); background: linear-gradient(135deg, rgba(124,58,237,0.07), transparent);">
+          <div style="width:100%">
+            <span class="service-situation" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">Tenés una reunión con inversores en las próximas 2 semanas <span style="background:var(--purple); color:white; font-size:9px; padding:2px 8px; border-radius:3px; letter-spacing:1px; white-space:nowrap;">URGENTE</span></span>
+            <div class="service-name">Fundraising Express</div>
+            <div class="service-desc">Cuando el timing es crítico, la velocidad de ejecución importa tanto como la calidad. Todo lo del Fundraising Ready, con prioridad absoluta para que llegués listo a esa reunión.</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+              <button class="service-cta">Hablemos hoy →</button>
+              <div class="service-price" style="margin-left:16px;">
+                <span class="price-amount">desde $6,500</span>
+                <span class="price-note">precio fijo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div style="width:100%">
+            <span class="service-situation">Necesito estructura offshore antes de mi ronda</span>
+            <div class="service-name">Delaware Flip / Offshore</div>
+            <div class="service-desc">Cuando los fondos piden una estructura holding limpia antes de invertir, el timing importa. Coordinamos el holding en Cayman, BVI o UK con los tiempos de tu ronda.</div>
+            <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+              <button class="service-cta">Cotizá en la discovery →</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div style="width:100%">
+            <span class="service-situation">Quiero operar en LATAM como empresa extranjera</span>
+            <div class="service-name">Soft Landing LATAM</div>
+            <div class="service-desc">Operar en un nuevo mercado sin estructura local es un riesgo que crece con cada cliente que sumás. Armamos la presencia legal correcta en el país que necesitás — con licencias si aplica.</div>
+            <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+              <button class="service-cta">Cotizá en la discovery →</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div style="width:100%">
+            <span class="service-situation">Necesito contratos que la gente entienda</span>
+            <div class="service-name">Legal Design Contracts</div>
+            <div class="service-desc">Un contrato que nadie lee no protege a nadie. Transformamos tus Terms & Conditions, Founder Agreements y más en documentos visuales que tus clientes, socios e inversores realmente entienden.</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+              <button class="service-cta">Quiero saber más →</button>
+              <div class="service-price" style="margin-left:16px;">
+                <span class="price-amount">$2,500</span>
+                <span class="price-note">flat fee</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="service-card">
-        <div>
-          <span class="service-situation">Quiero operar en LATAM como empresa extranjera</span>
-          <div class="service-name">Soft Landing LATAM</div>
-          <div class="service-desc">Estructuración local + licencias PSP o crypto según el país.</div>
-        </div>
-        <div class="service-price">
-          <span class="price-amount">$5,500+</span>
-          <span class="price-note">precio fijo</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div>
-          <span class="service-situation">Necesito contratos que la gente entienda</span>
-          <div class="service-name">Legal Design Contracts</div>
-          <div class="service-desc">Terms & Conditions, Founder Agreements y más — transformados en documentos visuales e interactivos.</div>
-        </div>
-        <div class="service-price">
-          <span class="price-amount">$2,500</span>
-          <span class="price-note">flat fee</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div>
-          <span class="service-situation">Quiero que alguien cuide mi estructura mes a mes</span>
+      <!-- FRACTIONAL CLO — cierre -->
+      <div class="service-card" style="display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap; border-color:rgba(167,139,250,0.25); background:linear-gradient(135deg, rgba(124,58,237,0.05), transparent);">
+        <div style="flex:1; min-width:260px;">
+          <span class="service-situation">Quiero que alguien cuide mi estructura — y no saber de qué me estoy perdiendo</span>
           <div class="service-name">Fractional CLO</div>
-          <div class="service-desc">Monitoreo regulatorio, compliance, contratos y soporte estratégico mensual.</div>
+          <div class="service-desc">La regulación cambia. Tu negocio crece. Tener a alguien que monitorea, anticipa y actúa antes de que algo se convierta en un problema es lo que hace la diferencia entre reaccionar y estar siempre un paso adelante.</div>
         </div>
-        <div class="service-price">
-          <span class="price-amount">$1,000+</span>
-          <span class="price-note">por mes</span>
+        <div style="flex-shrink:0;">
+          <button class="service-cta">Cotizá en la discovery →</button>
         </div>
       </div>
 
@@ -557,6 +618,35 @@
         "Teníamos inversores que querían entrar pero no teníamos nada constituido. <strong>En tres semanas armamos la estructura y pudimos cerrar la ronda.</strong> Lo que más valoré fue que Camila primero entendió el modelo antes de proponer algo."
       </div>
       <div class="quote-author">— Founder, Fintech LATAM</div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section style="padding: 80px 48px; border-top: 1px solid var(--border);">
+  <div style="max-width:1100px; margin:0 auto;">
+    <div class="section-eyebrow">Por qué CipherLaw</div>
+    <h2 style="font-size:clamp(24px, 3vw, 36px); font-weight:700; letter-spacing:-0.5px; margin-bottom:40px;">Lo que nos hace distintos</h2>
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;">
+
+      <div style="padding:28px; background:var(--surface); border:1px solid var(--border); border-radius:8px;">
+        <div style="font-size:22px; margin-bottom:14px;">🌐</div>
+        <div style="font-size:14px; font-weight:600; color:var(--white); margin-bottom:8px;">Un solo interlocutor para todo</div>
+        <div style="font-size:13px; color:var(--gray); line-height:1.6;">No coordinás vos con abogados en Delaware, España y Argentina. Nosotros gestionamos la red — vos hablás con una sola persona.</div>
+      </div>
+
+      <div style="padding:28px; background:var(--surface); border:1px solid var(--border); border-radius:8px;">
+        <div style="font-size:22px; margin-bottom:14px;">💎</div>
+        <div style="font-size:14px; font-weight:600; color:var(--white); margin-bottom:8px;">Precio fijo, sin sorpresas</div>
+        <div style="font-size:13px; color:var(--gray); line-height:1.6;">Sabés cuánto sale antes de empezar. Sin horas facturables que se acumulan, sin cargos adicionales inesperados.</div>
+      </div>
+
+      <div style="padding:28px; background:var(--surface); border:1px solid var(--border); border-radius:8px;">
+        <div style="font-size:22px; margin-bottom:14px;">⚡</div>
+        <div style="font-size:14px; font-weight:600; color:var(--white); margin-bottom:8px;">Velocidad cuando importa</div>
+        <div style="font-size:13px; color:var(--gray); line-height:1.6;">Cuando tenés una reunión con inversores en dos semanas, no podemos tardar dos meses. Estructuramos con los tiempos de tu negocio.</div>
+      </div>
+
     </div>
   </div>
 </section>
