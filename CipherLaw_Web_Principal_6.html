@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CipherLaw — Legal Architecture for Bold Founders</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080810;
+    --deep: #0d0d1a;
+    --surface: #12121f;
+    --card: #181828;
+    --border: rgba(139, 92, 246, 0.15);
+    --border-bright: rgba(139, 92, 246, 0.4);
+    --purple-deep: #4c1d95;
+    --purple: #7c3aed;
+    --purple-mid: #8b5cf6;
+    --purple-light: #a78bfa;
+    --purple-glow: rgba(124, 58, 237, 0.12);
+    --white: #f0eeff;
+    --gray: #8b8aaa;
+    --gray-light: #c4c3dd;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black); color: var(--white);
+    font-family: var(--sans); font-size: 16px;
+    line-height: 1.6; overflow-x: hidden;
+  }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--purple-light);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+  }
+  .eyebrow::before {
+    content: ''; display: block; width: 28px; height: 1px;
+    background: var(--purple-light);
+  }
+  .eyebrow.centered { justify-content: center; }
+  .eyebrow.centered::before { display: none; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px; background: rgba(8, 8, 16, 0.9);
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 14px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--white); font-weight: 700;
+  }
+  .nav-logo .bf { color: var(--purple-light); font-size: 18px; }
+  .nav-links {
+    display: flex; gap: 28px; align-items: center;
+  }
+  .nav-links a {
+    color: var(--gray-light); text-decoration: none; font-size: 14px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-actions { display: flex; gap: 16px; align-items: center; }
+  .nav-playbooks {
+    color: var(--purple-light); text-decoration: none; font-size: 14px;
+    font-weight: 500; transition: color 0.2s;
+  }
+  .nav-playbooks:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--purple); color: var(--white); border: none;
+    padding: 10px 22px; border-radius: 4px; font-family: var(--sans);
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: background 0.2s; text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--purple-mid); }
+  .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 24px; cursor: pointer; }
+
+  /* HERO */
+  .hero {
+    min-height: 88vh; display: flex; align-items: center;
+    padding: 130px 48px 80px; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 60% 35%, rgba(124, 58, 237, 0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 15% 80%, rgba(76, 29, 149, 0.08) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0; opacity: 0.03;
+    background-image:
+      linear-gradient(var(--purple) 1px, transparent 1px),
+      linear-gradient(90deg, var(--purple) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 75%);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .hero h1 {
+    font-size: clamp(38px, 5.4vw, 72px); font-weight: 700;
+    line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px;
+    max-width: 900px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-mid) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub {
+    font-size: 18px; color: var(--gray-light); line-height: 1.6;
+    max-width: 600px; margin-bottom: 36px;
+  }
+  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--purple); color: var(--white); border: none;
+    padding: 16px 34px; border-radius: 4px; font-family: var(--sans);
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--purple-mid); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent; border: 1px solid var(--border-bright);
+    color: var(--purple-light); padding: 16px 30px; border-radius: 4px;
+    font-family: var(--sans); font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+  }
+  .btn-ghost:hover { background: var(--purple-glow); color: var(--white); }
+  .hero-meta {
+    margin-top: 36px; display: flex; gap: 28px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gray);
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 8px; }
+  .hero-meta span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
+
+  /* SECTIONS */
+  section { position: relative; }
+  .section-pad { padding: 80px 48px; max-width: 1180px; margin: 0 auto; }
+  .section-title {
+    font-size: clamp(28px, 3.4vw, 42px); font-weight: 700;
+    line-height: 1.14; letter-spacing: -0.8px; margin-bottom: 20px;
+    max-width: 780px;
+  }
+  .section-lead {
+    font-size: 16px; color: var(--gray-light); line-height: 1.65;
+    max-width: 660px;
+  }
+  .divider-top { border-top: 1px solid var(--border); }
+
+  /* PROBLEM */
+  .problem { background: var(--deep); }
+  .problem-statement {
+    font-size: clamp(25px, 3vw, 38px); font-weight: 700;
+    line-height: 1.2; letter-spacing: -0.8px; margin-bottom: 36px;
+    max-width: 840px;
+  }
+  .problem-statement .accent { color: var(--purple-light); }
+  .problem-body { font-size: 16px; color: var(--gray-light); line-height: 1.7; max-width: 680px; margin-bottom: 28px; }
+  .problem-list { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 36px; }
+  .problem-item { background: var(--surface); padding: 22px 28px; display: flex; gap: 18px; align-items: flex-start; }
+  .problem-item strong { color: var(--white); font-weight: 600; display: block; margin-bottom: 6px; font-size: 15px; }
+  .problem-item span { color: var(--gray); font-size: 14px; line-height: 1.6; }
+  .problem-item .x { color: var(--purple-light); font-family: var(--mono); font-size: 14px; flex-shrink: 0; padding-top: 2px; }
+  .thesis-box {
+    background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(124,58,237,0.02));
+    border: 1px solid var(--border-bright); border-radius: 10px;
+    padding: 36px 40px; max-width: 820px;
+  }
+  .thesis-box p { font-size: 18px; color: var(--gray-light); line-height: 1.7; }
+  .thesis-box strong { color: var(--white); }
+  .thesis-code { font-family: var(--mono); color: var(--purple-light); font-size: 14px; display: block; margin-bottom: 16px; letter-spacing: 1px; }
+
+  /* METHOD */
+  .method-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 40px; }
+  .method-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 28px; transition: border-color 0.2s;
+  }
+  .method-card:hover { border-color: var(--border-bright); }
+  .method-card.wide { grid-column: 1 / -1; }
+  .method-num {
+    font-family: var(--mono); font-size: 12px; color: var(--purple);
+    letter-spacing: 2px; margin-bottom: 12px; display: block;
+  }
+  .method-name { font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+  .method-desc { font-size: 14px; color: var(--gray); line-height: 1.6; }
+
+  /* GLOBE / PLAYBOOKS */
+  .globe-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 32px; padding-top: 32px; border-top: 1px dashed var(--border); }
+  .globe-visual {
+    aspect-ratio: 1; border-radius: 50%; position: relative;
+    background: radial-gradient(circle at 35% 30%, rgba(124,58,237,0.25), rgba(13,13,26,0.9) 70%);
+    border: 1px solid var(--border); overflow: hidden; max-width: 320px;
+  }
+  .globe-visual::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background-image: linear-gradient(var(--purple) 1px, transparent 1px), linear-gradient(90deg, var(--purple) 1px, transparent 1px);
+    background-size: 26px 26px; opacity: 0.12;
+  }
+  .globe-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--purple-mid); box-shadow: 0 0 12px var(--purple-mid); animation: pulse 2.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); } }
+  .globe-info h3 { font-size: 22px; font-weight: 600; margin-bottom: 14px; }
+  .globe-info p { font-size: 15px; color: var(--gray); line-height: 1.65; margin-bottom: 20px; }
+  .globe-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+  .globe-tag { font-family: var(--mono); font-size: 11px; color: var(--purple-light); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; }
+
+  /* INDUSTRIES */
+  .industries { background: var(--deep); }
+  .ind-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 40px; }
+  .ind-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 28px 26px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+  .ind-card:hover { border-color: var(--border-bright); }
+  .ind-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--purple), transparent); }
+  .ind-name { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .ind-scope { font-family: var(--mono); font-size: 11px; color: var(--purple-light); letter-spacing: 1px; margin-bottom: 18px; }
+  .ind-desc { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+  /* SERVICES */
+  .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 40px; }
+  .svc-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px; transition: all 0.2s; }
+  .svc-card:hover { border-color: var(--border-bright); background: rgba(124,58,237,0.04); }
+  .svc-name { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .svc-desc { font-size: 14px; color: var(--gray); line-height: 1.6; }
+  .svc-cta-row { margin-top: 32px; text-align: center; }
+
+  /* TEAM */
+  .team { background: var(--deep); }
+  .team-track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
+  .team-card { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 3/4; background: var(--card); border: 1px solid var(--border); cursor: pointer; }
+  .team-card.placeholder { border-style: dashed; opacity: 0.6; }
+  .team-photo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--mono); color: var(--purple-light); opacity: 0.3; font-size: 12px; letter-spacing: 2px; background: linear-gradient(160deg, rgba(124,58,237,0.15), var(--card)); }
+  .team-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; background: linear-gradient(to top, rgba(8,8,16,0.95) 20%, transparent 70%); transition: background 0.3s; }
+  .team-role { font-family: var(--mono); font-size: 10px; color: var(--purple-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .team-name { font-size: 18px; font-weight: 600; line-height: 1.2; margin-bottom: 0; }
+  .team-quote { font-size: 13px; color: var(--gray-light); line-height: 1.55; max-height: 0; overflow: hidden; opacity: 0; transition: all 0.35s ease; margin-top: 0; }
+  .team-card:hover .team-quote { max-height: 140px; opacity: 1; margin-top: 12px; }
+  .team-linkedin { font-family: var(--mono); font-size: 11px; color: var(--purple-light); margin-top: 12px; max-height: 0; overflow: hidden; opacity: 0; transition: all 0.35s ease; }
+  .team-card:hover .team-linkedin { max-height: 30px; opacity: 1; }
+
+  /* RESOURCES */
+  .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 40px; }
+  .res-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 32px; transition: border-color 0.2s; }
+  .res-card:hover { border-color: var(--border-bright); }
+  .res-tag { font-family: var(--mono); font-size: 11px; color: var(--purple-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .res-title { font-size: 24px; font-weight: 600; margin-bottom: 14px; }
+  .res-desc { font-size: 15px; color: var(--gray); line-height: 1.65; margin-bottom: 24px; }
+  .res-link { color: var(--purple-light); text-decoration: none; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+  .res-link:hover { color: var(--white); }
+
+  /* CTA FINAL */
+  .final-cta { text-align: center; padding: 90px 48px; position: relative; overflow: hidden; }
+  .final-cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 50% 70% at 50% 50%, rgba(124,58,237,0.1) 0%, transparent 70%); }
+  .final-cta-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+  .final-cta h2 { font-size: clamp(30px, 4.5vw, 52px); font-weight: 700; letter-spacing: -1.2px; margin-bottom: 20px; line-height: 1.1; }
+  .final-cta p { font-size: 18px; color: var(--gray-light); line-height: 1.6; margin-bottom: 40px; }
+  .final-meta { margin-top: 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 48px; }
+  .footer-inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand { font-family: var(--mono); font-size: 13px; color: var(--purple-light); letter-spacing: 2px; }
+  .footer-note { font-size: 12px; color: var(--gray); font-style: italic; }
+
+  /* MODEL STATEMENT */
+  .model-statement {
+    font-size: 17px; font-weight: 600; line-height: 1.4;
+    color: var(--white); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .model-statement::before {
+    content: ''; width: 18px; height: 2px; background: var(--purple); flex-shrink: 0;
+  }
+
+  /* MANTRA (thesis + butterfly) */
+  .mantra {
+    text-align: center; max-width: 820px; margin: 8px auto 0;
+    padding: 48px 40px;
+    background: radial-gradient(ellipse 80% 100% at 50% 0%, rgba(124,58,237,0.1), transparent 70%);
+    border-top: 1px solid var(--border);
+  }
+  .mantra-butterfly {
+    font-size: 44px; margin-bottom: 24px; line-height: 1;
+    filter: drop-shadow(0 0 16px rgba(124,58,237,0.5));
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .mantra-text {
+    font-size: clamp(22px, 3vw, 32px); font-weight: 700; line-height: 1.3;
+    letter-spacing: -0.5px; margin-bottom: 16px;
+  }
+  .mantra-text .accent {
+    background: linear-gradient(135deg, var(--purple-light), var(--purple-mid));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .mantra-sub { font-size: 16px; color: var(--gray); }
+
+  /* JURISDICTION LIST */
+  .juris-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .juris-chip {
+    font-family: var(--mono); font-size: 12px; color: var(--gray-light);
+    border: 1px solid var(--border); border-radius: 5px; padding: 8px 14px;
+    cursor: pointer; transition: all 0.2s; background: var(--surface);
+  }
+  .juris-chip:hover, .juris-chip.active { border-color: var(--purple); color: var(--white); background: var(--purple-glow); }
+  .juris-chip .status { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--purple-mid); margin-right: 7px; vertical-align: middle; }
+  .juris-chip.soon .status { background: var(--gray); }
+
+  /* Q&A */
+  .qa-list { margin-top: 40px; display: flex; flex-direction: column; gap: 10px; }
+  .qa-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+  .qa-item:hover { border-color: var(--border-bright); }
+  .qa-q { width: 100%; background: none; border: none; color: var(--white); font-family: var(--sans); font-size: 15px; font-weight: 500; text-align: left; padding: 22px 28px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; line-height: 1.4; }
+  .qa-q .plus { color: var(--purple-light); font-size: 22px; flex-shrink: 0; transition: transform 0.3s; font-weight: 300; }
+  .qa-item.open .qa-q .plus { transform: rotate(45deg); }
+  .qa-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; padding: 0 32px; }
+  .qa-item.open .qa-a { max-height: 400px; padding: 0 32px 28px; }
+  .qa-a p { font-size: 15px; color: var(--gray-light); line-height: 1.7; }
+  .qa-a strong { color: var(--white); }
+
+  /* TESTIMONIALS */
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 40px; }
+  .testi-card { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--purple); border-radius: 0 10px 10px 0; padding: 26px; display: flex; flex-direction: column; }
+  .testi-quote { font-size: 15px; color: var(--gray-light); line-height: 1.7; font-style: italic; margin-bottom: 24px; flex: 1; }
+  .testi-quote strong { color: var(--white); font-style: normal; }
+  .testi-author { font-family: var(--mono); font-size: 11px; color: var(--purple-light); letter-spacing: 1px; }
+  .testi-company { font-size: 13px; color: var(--gray); margin-top: 4px; }
+  .testi-draft { display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #d4a017; border: 1px solid rgba(212,160,23,0.4); border-radius: 3px; padding: 2px 8px; margin-bottom: 16px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: block; }
+    .method-grid, .ind-grid, .svc-grid, .res-grid, .globe-wrap { grid-template-columns: 1fr; }
+    .team-track { grid-template-columns: repeat(2, 1fr); }
+    .testi-grid { grid-template-columns: 1fr; }
+    .team-quote, .team-linkedin { max-height: none; opacity: 1; margin-top: 12px; }
+    .team-card { aspect-ratio: auto; min-height: 320px; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .hero { padding: 120px 24px 80px; }
+    .section-pad { padding: 70px 24px; }
+    .final-cta { padding: 90px 24px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span class="bf">&#129419;</span> CIPHERLAW</div>
+  <div class="nav-links">
+    <a href="#problem">The Problem</a>
+    <a href="#method">How it Works</a>
+    <a href="#industries">Industries</a>
+    <a href="#services">Services</a>
+    <a href="#team">Team</a>
+    <a href="#resources">Resources</a>
+  </div>
+  <div class="nav-actions">
+    <a href="#resources" class="nav-playbooks">See Playbooks</a>
+    <a href="#contact" class="nav-cta">Book a Call</a>
+  </div>
+  <button class="nav-toggle">&#9776;</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Your Global Legal Stack</div>
+    <h1>La ley es el <span class="accent">código</span> sobre el que corre tu negocio.</h1>
+    <p class="hero-sub">
+      Olvidate de los abogados tradicionales que no entienden tu producto. Implementamos una arquitectura legal multi-jurisdiccional que impulsa tu crecimiento.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Call →</a>
+      <a href="#method" class="btn-ghost">Ver el método</a>
+    </div>
+    <div class="hero-meta">
+      <span>Multi-jurisdiction</span>
+      <span>Investor-ready</span>
+      <span>Precio fijo</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem divider-top" id="problem">
+  <div class="section-pad">
+    <div class="eyebrow">The Problem</div>
+    <h2 class="problem-statement">La estructura legal es lo que frena a <span class="accent">startups que ya tienen todo para crecer.</span></h2>
+    <p class="problem-body">
+      Cuando estás construyendo, la prioridad es el producto y la tracción. La parte legal queda para después.
+    </p>
+    <p class="problem-body" style="margin-bottom:40px;">
+      El problema es que ese "después" llega siempre en el peor momento: una ronda que se cae en el due diligence, una expansión que no podés ejecutar, un cliente enterprise que pide compliance que no tenés.
+    </p>
+
+    <div class="model-statement">Por qué el modelo tradicional no está hecho para vos</div>
+
+    <div class="problem-list">
+      <div class="problem-item">
+        <span class="x">01</span>
+        <div>
+          <strong>Las firmas grandes</strong>
+          <span>Inaccesibles en precio y en mentalidad. No hablan tu idioma ni se mueven a tu velocidad.</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <span class="x">02</span>
+        <div>
+          <strong>Las soluciones baratas</strong>
+          <span>Te dan un template genérico sin entender tu modelo. Terminás rehaciendo la estructura cuando ya es caro y urgente.</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <span class="x">03</span>
+        <div>
+          <strong>Tu propio equipo</strong>
+          <span>Improvisa con documentos de internet o IA, acumulando una deuda legal invisible que crece con cada contrato, cada empleado, cada nuevo mercado.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mantra">
+      <div class="mantra-butterfly">&#129419;</div>
+      <p class="mantra-text">En CipherLaw creemos que el derecho debe diseñarse como una <span class="accent">arquitectura que evoluciona con tu proyecto.</span></p>
+      <p class="mantra-sub">Es la base sobre la que se construye todo lo demás.</p>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="divider-top" id="method">
+  <div class="section-pad">
+    <div class="eyebrow">How it Works</div>
+    <h2 class="section-title">De diagnóstico a operación global, en cinco fases.</h2>
+    <p class="section-lead">Cada proyecto es distinto, pero el camino para estructurarlo bien sigue una lógica probada. Así trabajamos.</p>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <span class="method-num">01</span>
+        <div class="method-name">Strategic Diagnosis</div>
+        <div class="method-desc">Mapeamos tu modelo de negocio, tus jurisdicciones, tus riesgos y hacia dónde querés ir. Antes de proponer nada, entendemos exactamente dónde estás parado.</div>
+      </div>
+      <div class="method-card">
+        <span class="method-num">02</span>
+        <div class="method-name">Modular Legal Design</div>
+        <div class="method-desc">Diseñamos (o rediseñamos) tu estructura ideal: holding, token compliance, regulación de IA, acuerdos de founders, estructuras corporativas. Modular, porque crece con vos.</div>
+      </div>
+
+      <div class="method-card wide">
+        <span class="method-num">03</span>
+        <div class="method-name">Global Implementation</div>
+        <div class="method-desc">Coordinamos con nuestra red de aliados locales en 20+ jurisdicciones. No hablás con 10 estudios en 10 países. Hablás con CipherLaw.</div>
+
+        <div class="globe-wrap">
+          <div class="globe-visual">
+            <div class="globe-dot" style="top:30%; left:25%;"></div>
+            <div class="globe-dot" style="top:45%; left:60%; animation-delay:0.5s;"></div>
+            <div class="globe-dot" style="top:62%; left:38%; animation-delay:1s;"></div>
+            <div class="globe-dot" style="top:25%; left:55%; animation-delay:1.5s;"></div>
+            <div class="globe-dot" style="top:55%; left:70%; animation-delay:0.8s;"></div>
+          </div>
+          <div class="globe-info">
+            <h3>Jurisdiction Playbooks</h3>
+            <p>Para cada jurisdicción tenemos un playbook estructurado: incorporación, compliance y estrategia fiscal. Explorá tu caso en el globo o elegí directamente:</p>
+            <div class="globe-tags">
+              <span class="globe-tag">Entity Formation</span>
+              <span class="globe-tag">Compliance</span>
+              <span class="globe-tag">Tax Strategy</span>
+            </div>
+            <div class="juris-list">
+              <span class="juris-chip"><span class="status"></span>USA</span>
+              <span class="juris-chip"><span class="status"></span>Cayman</span>
+              <span class="juris-chip"><span class="status"></span>BVI</span>
+              <span class="juris-chip"><span class="status"></span>Panamá</span>
+              <span class="juris-chip"><span class="status"></span>Suiza</span>
+              <span class="juris-chip"><span class="status"></span>UK</span>
+              <span class="juris-chip"><span class="status"></span>Argentina</span>
+              <span class="juris-chip soon"><span class="status"></span>México · soon</span>
+              <span class="juris-chip soon"><span class="status"></span>Colombia · soon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <span class="method-num">04</span>
+        <div class="method-name">Continuous Support</div>
+        <div class="method-desc">Acompañamos cada etapa de tu evolución: nuevas rondas, contrataciones, eventos de token, expansión a nuevos mercados. No desaparecemos cuando termina el proyecto.</div>
+      </div>
+      <div class="method-card">
+        <span class="method-num">05</span>
+        <div class="method-name">Education & Community</div>
+        <div class="method-desc">Acceso a workshops, plantillas, recursos y una comunidad de founders como vos. Porque entender tu estructura te da control.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries divider-top" id="industries">
+  <div class="section-pad">
+    <div class="eyebrow">Industries</div>
+    <h2 class="section-title">Sabemos cómo se regula lo que estás construyendo.</h2>
+    <p class="section-lead">Cada industria tiene su propia complejidad regulatoria. Hablamos tu idioma técnico, no solo el legal.</p>
+
+    <div class="ind-grid">
+      <div class="ind-card">
+        <div class="ind-scope">DeFi · DAOs · Tokens · Exchanges</div>
+        <div class="ind-name">Web3 & Crypto</div>
+        <div class="ind-desc">Sabemos la diferencia entre un token utility y uno security, entendemos MiCA y la regulación PSAV, y estructuramos para que tu proyecto no quede en la zona gris. No tenés que explicarnos qué es un smart contract.</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-scope">Wallets · Payments · Lending · Remesas</div>
+        <div class="ind-name">Fintech & Payments</div>
+        <div class="ind-desc">Conocemos el régimen PSP del BCRA, las exigencias de la UIF, las licencias para operar cross-border. Monitoreamos los cambios regulatorios para que vos no tengas que vivir pendiente de cada comunicado.</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-scope">IA · Data · SaaS · Distribución global</div>
+        <div class="ind-name">AI & SaaS</div>
+        <div class="ind-desc">Si tenés un usuario en Europa, probablemente ya te aplica el GDPR, y el EU AI Act está en vigor. Te mostramos qué resolver antes de que un cliente enterprise te lo pida o un regulador te lo señale.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Q&A -->
+<section class="divider-top" id="qa">
+  <div class="section-pad">
+    <div class="eyebrow">Strategic Q&amp;A</div>
+    <h2 class="section-title">Las preguntas que desvelan a los founders.</h2>
+    <p class="section-lead">Las dudas que aparecen a las 2am cuando estás escalando. Estas son nuestras respuestas.</p>
+
+    <div class="qa-list">
+      <div class="qa-item">
+        <button class="qa-q">Generamos ingresos en múltiples jurisdicciones. ¿Estamos perdiendo plata por ineficiencia fiscal? <span class="plus">+</span></button>
+        <div class="qa-a"><p>Probablemente sí. Sin un diseño fiscal internacional sincronizado, lo más común es sufrir leakage por retenciones, doble imposición o repatriación ineficiente de ganancias. No "liquidamos impuestos" sin más: diseñamos una estructura global (por ejemplo US-LLC + OpCo local + Holding) para minimizar la fricción de forma legal y maximizar tu runway.</p></div>
+      </div>
+
+      <div class="qa-item">
+        <button class="qa-q">Nos estamos preparando para una Series A/B. ¿Nuestra estructura legal puede asustar a los VCs? <span class="plus">+</span></button>
+        <div class="qa-a"><p>Los inversores institucionales odian la incertidumbre. Si tu IP no está bien asignado, tu cap table está desordenado o tus crypto-assets no están legalmente definidos, sos uninvestable. Hacemos una Pre-Diligence Audit para ordenar la casa, proteger tu IP y reestructurar tu equity, así pasás el escrutinio de los VCs sin red flags.</p></div>
+      </div>
+
+      <div class="qa-item">
+        <button class="qa-q">Si demandan a mi entidad operativa principal, ¿están protegidos mis activos personales y mi IP? <span class="plus">+</span></button>
+        <div class="qa-a"><p>No deberían ser tocables, pero muchas veces lo son. Implementamos estrategias corporativas de defensa en capas, separando el holding de tu IP de la operación que asume el riesgo. Así, una demanda o un golpe regulatorio en una jurisdicción no contamina todo tu patrimonio.</p></div>
+      </div>
+
+      <div class="qa-item">
+        <button class="qa-q">Nuestro modelo (Token/AI) está en una zona gris regulatoria. ¿Cómo operamos sin que nos frenen? <span class="plus">+</span></button>
+        <div class="qa-a"><p>La innovación se mueve más rápido que la ley. Donde un estudio tradicional te dice que no se puede, nosotros te mostramos cómo. Diseñamos sandboxes regulatorios, usamos jurisdicciones específicas (como Wyoming, Panamá o Suiza) y redactamos términos de servicio que mitigan tu responsabilidad, para que innoves manteniendo a los reguladores a raya.</p></div>
+      </div>
+
+      <div class="qa-item">
+        <button class="qa-q">Necesito moverme rápido. ¿Lo legal va a ser un freno o un acelerador? <span class="plus">+</span></button>
+        <div class="qa-a"><p>No somos un estudio lento. Operamos con Legal Sprints: comunicación tech-first (Slack, Notion), generación automatizada de documentos y acceso directo a partners senior. Construimos las vías para que el tren corra a toda velocidad.</p></div>
+      </div>
+
+      <div class="qa-item">
+        <button class="qa-q">Recién empiezo. ¿No es demasiado caro estructurarme bien ahora? <span class="plus">+</span></button>
+        <div class="qa-a"><p>Lo caro es hacerlo mal. La mayoría de los founders que llegan tarde terminan pagando dos veces: primero la estructura improvisada, después rehacerla cuando un inversor o un cliente la rechaza, casi siempre con el reloj en contra. Trabajamos con precio fijo y por etapas, así invertís solo en lo que tu momento necesita: empezás con lo mínimo viable para no frenar, y escalás la estructura a medida que el negocio lo pide.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="divider-top" id="services">
+  <div class="section-pad">
+    <div class="eyebrow">Services</div>
+    <h2 class="section-title">Desde tu primera estructura hasta tu operación global.</h2>
+    <p class="section-lead">Cada servicio resuelve un momento específico de tu camino. Estos son los principales.</p>
+
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-name">Architecture Sprint</div>
+        <div class="svc-desc">El punto de partida. Analizamos tu modelo y te entregamos un roadmap claro de qué necesitás y en qué orden.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-name">Incorporation & Fundraising</div>
+        <div class="svc-desc">Incorporación en USA, estructura investor-ready, C-Corp + SAFE + founders agreements. Todo lo que necesitás para levantar capital.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-name">Holding & Cross-Border Structures</div>
+        <div class="svc-desc">Delaware Flip, holdings offshore, estructuras multi-jurisdicción para cuando escalás más allá de un país.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-name">Soft Landing LATAM</div>
+        <div class="svc-desc">Estructuración local y licencias para operar como empresa extranjera en los mercados de la región.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-name">Legal Design Contracts</div>
+        <div class="svc-desc">Contratos que se entienden. Terms & conditions, founders agreements y más, transformados en documentos visuales.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-name">Fractional CLO</div>
+        <div class="svc-desc">Tu equipo legal on-demand. Monitoreo regulatorio, compliance y soporte estratégico mes a mes.</div>
+      </div>
+    </div>
+
+    <div class="svc-cta-row">
+      <a href="#contact" class="btn-ghost">Ver todos los servicios y precios →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team divider-top" id="team">
+  <div class="section-pad">
+    <div class="eyebrow">CipherTeam</div>
+    <h2 class="section-title">The Architects.</h2>
+    <p class="section-lead">Un equipo multidisciplinario que diseña la infraestructura legal para la próxima generación de founders globales.</p>
+
+    <div class="team-track">
+      <div class="team-card">
+        <div class="team-photo">[ FOTO ]</div>
+        <div class="team-overlay">
+          <div class="team-role">Legal Designer & Founder</div>
+          <div class="team-name">Camila Soria</div>
+          <div class="team-quote">"Veo el derecho como una herramienta de transformación, no como una barrera. Diseño sistemas legales que le permiten a los founders escalar ideas audaces sin fronteras."</div>
+          <div class="team-linkedin">in · LinkedIn ↗</div>
+        </div>
+      </div>
+      <div class="team-card placeholder">
+        <div class="team-photo">[ FOTO ]</div>
+        <div class="team-overlay">
+          <div class="team-role">Rol a definir</div>
+          <div class="team-name">Nombre Apellido</div>
+          <div class="team-quote">[Sumar miembro del equipo actual]</div>
+          <div class="team-linkedin">in · LinkedIn ↗</div>
+        </div>
+      </div>
+      <div class="team-card placeholder">
+        <div class="team-photo">[ FOTO ]</div>
+        <div class="team-overlay">
+          <div class="team-role">Rol a definir</div>
+          <div class="team-name">Nombre Apellido</div>
+          <div class="team-quote">[Sumar miembro del equipo actual]</div>
+          <div class="team-linkedin">in · LinkedIn ↗</div>
+        </div>
+      </div>
+      <div class="team-card placeholder">
+        <div class="team-photo">[ FOTO ]</div>
+        <div class="team-overlay">
+          <div class="team-role">Rol a definir</div>
+          <div class="team-name">Nombre Apellido</div>
+          <div class="team-quote">[Sumar miembro del equipo actual]</div>
+          <div class="team-linkedin">in · LinkedIn ↗</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="divider-top" id="testimonials">
+  <div class="section-pad">
+    <div class="eyebrow">Built With Us</div>
+    <h2 class="section-title">Founders que ya tienen su arquitectura legal funcionando.</h2>
+    <p class="section-lead">De la informalidad a investor-ready. Estos son algunos de los founders que ya construyeron con nosotros.</p>
+
+    <div class="testi-grid">
+      <div class="testi-card">
+        <span class="testi-draft">Borrador · validar con cliente</span>
+        <div class="testi-quote">"Cerramos el pre-seed con la estructura lista y ahora vamos por el seed. Tener todo el armado legal y de fundraising resuelto desde el principio nos sacó un peso enorme: <strong>podemos enfocarnos en crecer, no en apagar incendios.</strong>"</div>
+        <div class="testi-author">FOUNDER</div>
+        <div class="testi-company">Islayer · Web3</div>
+      </div>
+
+      <div class="testi-card">
+        <span class="testi-draft">Borrador · validar con cliente</span>
+        <div class="testi-quote">"Nos diseñaron toda la estrategia legal y fiscal para lanzar el token: cómo estructurarlo, en qué jurisdicción, cómo planificarlo. <strong>Llegamos al fundraising con un plan claro, no improvisando.</strong>"</div>
+        <div class="testi-author">FOUNDER</div>
+        <div class="testi-company">Stavolot · Token / Web3</div>
+      </div>
+
+      <div class="testi-card">
+        <span class="testi-draft">Borrador · validar con cliente</span>
+        <div class="testi-quote">"Armaron toda la estructura de datos y los contratos de mi producto de IA. <strong>Por fin alguien que entiende lo que estoy construyendo</strong> y no me frena, me ayuda a avanzar tranquilo."</div>
+        <div class="testi-author">FOUNDER</div>
+        <div class="testi-company">IAI · AI / SaaS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="divider-top" id="resources">
+  <div class="section-pad">
+    <div class="eyebrow">Resources</div>
+    <h2 class="section-title">Lo que sabemos, abierto para vos.</h2>
+    <p class="section-lead">No guardamos el conocimiento bajo llave. Estos son nuestros recursos para founders que quieren entender antes de decidir.</p>
+
+    <div class="res-grid">
+      <div class="res-card">
+        <div class="res-tag">Whitepaper</div>
+        <div class="res-title">The CipherLaw Framework</div>
+        <div class="res-desc">Nuestra tesis completa sobre cómo el diseño legal estratégico se convierte en infraestructura para startups que construyen en la frontera tecnológica.</div>
+        <a href="#" class="res-link">Leer el whitepaper →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-tag">Legal Design Studio</div>
+        <div class="res-title">Contratos que se entienden</div>
+        <div class="res-desc">Una muestra de cómo transformamos documentos legales densos en activos visuales e interactivos que tus clientes, socios e inversores realmente comprenden.</div>
+        <a href="#" class="res-link">Explorar el studio →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta divider-top" id="contact">
+  <div class="final-cta-bg"></div>
+  <div class="final-cta-inner">
+    <div class="eyebrow centered">Let's Build</div>
+    <h2>Tu próxima etapa empieza con una buena estructura.</h2>
+    <p>Cuando estés listo, hablemos. En 30 minutos entendemos tu situación y te mostramos el camino, sin compromiso ni tecnicismos innecesarios.</p>
+    <a href="#" class="btn-primary">Book a Call →</a>
+    <div class="final-meta">30 min · Sin costo · Sin compromiso</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">&#129419; CIPHERLAW © 2026</div>
+    <div class="footer-note">Draft de la web principal para revisión — no publicar</div>
+  </div>
+</footer>
+
+
+<script>
+  // Q&A accordion
+  document.querySelectorAll('.qa-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.parentElement;
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.qa-item').forEach(function(i){ i.classList.remove('open'); });
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Mobile nav toggle
+  var toggle = document.querySelector('.nav-toggle');
+  var links = document.querySelector('.nav-links');
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    });
+  }
+</script>
+</body>
+</html>
